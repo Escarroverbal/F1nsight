@@ -1,0 +1,25 @@
+name: Concatenate Files
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  concatenate:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Concatenate all files
+      run: |
+        mkdir -p output
+        find . -type f -name '*.txt' -exec cat {} + > output/concatenated.txt
+
+    - name: Upload concatenated file
+      uses: actions/upload-artifact@v2
+      with:
+        name: concatenated-file
+        path: output/concatenated.txt
